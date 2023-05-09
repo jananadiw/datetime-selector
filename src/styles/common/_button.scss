@@ -1,0 +1,22 @@
+.button {
+  width: 100px;
+  font-size: 14px;
+  border-radius: 4px;
+  text-align: center;
+  padding: 10px 0 10px 0;
+  font-weight: 600;
+  cursor: pointer;
+
+  &__set-up {
+    @extend .button;
+    background-color: #2a72e5;
+    color: #fff;
+    margin-right: 12px;
+  }
+
+  &__cancel {
+    @extend .button;
+    background-color: #e9edf1;
+    color: #3a495f;
+  }
+}
