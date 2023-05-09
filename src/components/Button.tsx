@@ -1,5 +1,15 @@
 import React from 'react';
 
-export default function Button(props: { className: string; text: string }) {
-  return <div className={props.className}>{props.text}</div>;
-}
+type ButtonProps = {
+  onClick?: () => void;
+  className: string;
+  text: string;
+};
+
+export const Button: React.FC<ButtonProps> = ({ className, text, onClick }) => {
+  return (
+    <div className={className} onClick={onClick}>
+      {text}
+    </div>
+  );
+};

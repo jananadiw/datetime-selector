@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+  height: 57px;
+  padding: 10px 0px;
+  border-top: 1px solid #dfe3e9;
+  border-bottom: 1px solid #dfe3e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &__time-input {
+    width: 32px;
+    padding-right: 4px;
+    font-size: 28px;
+    font-weight: 600px;
+    color: #354052;
+    border: none;
+
+    &:focus {
+      border: none;
+    }
+    &:hover {
+      border: none;
+    }
+  }
+
+  &__arrow-box {
+    width: 10px;
+    padding-right: 10px;
+  }
+
+  &__selector {
+    width: 72px;
+    padding: 6px 10px;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 1.5em;
+  }
+
+  &__selector::before {
+    content: '▼';
+    // position: absolute;
+    display: inline;
+    right: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}

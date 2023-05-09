@@ -1,6 +1,6 @@
 import React from 'react';
-import { startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
-import '../styles/layout.scss';
+import { startOfMonth, endOfMonth, differenceInDays, sub, add, format, setDate } from 'date-fns';
+import '../styles/calendar.scss';
 import { Cell } from '../components/Cell';
 import { daysOfWeek } from '../DateUtils';
 import calender_Forward_icon from '../assets/calender_Forward_icon.svg';
@@ -8,7 +8,7 @@ import calender_back_icon from '../assets/calender_back_icon.svg';
 
 type CalendarProps = {
   value?: Date;
-  onChange?: (value: Date) => void;
+  onChange: (value: Date) => void;
 };
 
 export const Calendar = (props: CalendarProps) => {
@@ -17,14 +17,23 @@ export const Calendar = (props: CalendarProps) => {
   const endDate = endOfMonth(value);
   const numDays = differenceInDays(endDate, startDate) + 1;
   const prefixDays = startDate.getDay(); // get the starting day of the month
+  const prevMonth = () => onChange && onChange(sub(value, { months: 1 }));
+  const nextMonth = () => onChange && onChange(add(value, { months: 1 }));
+
+  const handleClickDate = (index: number) => {
+    const date = setDate(value, index);
+    onChange && onChange(date);
+    // console.log('selected date', format(date, 'yyyy LLLL dd'));
+  };
+
   return (
     <div className='calendar'>
       <div className='calendar__header'>
-        <div className='calendar__header__navigation'>
+        <div className='calendar__header__navigation' onClick={prevMonth}>
           <img src={calender_back_icon}></img>
         </div>
-        <div className='calendar__header__middle'>{'May 2023'}</div>
-        <div className='calendar__header__navigation'>
+        <div className='calendar__header__middle'>{format(value, 'LLLL yyyy')}</div>
+        <div className='calendar__header__navigation' onClick={nextMonth}>
           <img src={calender_Forward_icon}></img>
         </div>
       </div>
@@ -41,7 +50,11 @@ export const Calendar = (props: CalendarProps) => {
         {Array.from({ length: numDays }).map((_, index) => {
           const date = index + 1;
           return (
-            <Cell className='calendar__body cell__date' key={date}>
+            <Cell
+              className='calendar__body cell__date'
+              key={date}
+              onClick={() => handleClickDate(date)}
+            >
               {date}
             </Cell>
           );
