@@ -1,3 +1,3 @@
 declare module 'datetime-selector-react' {
-  export const DateTimePicker;
+  export default function DateTimePicker(): JSX.Element;
 }
