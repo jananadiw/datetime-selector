@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import '../styles/clock.scss';
 import timer_down_icon_inactive from '../assets/timer_down_icon_inactive.svg';
@@ -6,29 +6,114 @@ import timer_up_icon_inactive from '../assets/timer_up_icon_inactive.svg';
 
 type ClockProps = {
   value: Date;
-  setTime: Dispatch<SetStateAction<[]>>;
   onChange: (value: Date) => void;
 };
 
 export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
-  const [hours, setHours] = useState<number>(0);
-  const [minutes, setMinutes] = useState<number>(0);
-  const [seconds, setSeconds] = useState<number>(0);
-  const [meridiem, setMeridiem] = useState<string>('AM');
+  const [hours, setHours] = useState<number>(value.getHours());
+  const [minutes, setMinutes] = useState<number>(value.getMinutes());
+  const [seconds, setSeconds] = useState<number>(value.getSeconds());
+  const [meridiem, setMeridiem] = useState<string>(hours >= 12 ? 'PM' : 'AM');
 
-  const setUp = (onClose: any) => {
-    let hour;
-    if (meridiem === 'AM' && hours === 12) {
-      setTime([0, minutes, seconds]);
-    } else if (meridiem === 'PM' && hours === 12) {
-      setTime([hours, minutes, seconds]);
-    } else if (meridiem === 'PM' && hours !== 12) {
-      hour = hours + 12;
-      setTime([hour, minutes, seconds]);
-    } else {
-      setTime([hours, minutes, seconds]);
+  const updateDate = (newHours: number, newMinutes: number, newSeconds: number) => {
+    setHours(newHours);
+    setMinutes(newMinutes);
+    setSeconds(newSeconds);
+    setMeridiem(newHours >= 12 ? 'PM' : 'AM');
+    const newDate = new Date(value);
+    newDate.setHours(newHours, newMinutes, newSeconds);
+    onChange(newDate);
+  };
+
+  const addHours = () => {
+    let newHours = hours + 1;
+    if (newHours > 12) {
+      newHours = 1;
     }
-    onClose();
+    updateDate(newHours, minutes, seconds);
+  };
+
+  const decreaseHours = () => {
+    let newHours = hours - 1;
+    if (newHours < 1) {
+      newHours = 12;
+    }
+    updateDate(newHours, minutes, seconds);
+  };
+
+  const addMinutes = () => {
+    let newMinutes = minutes + 1;
+    let newHours = hours;
+    if (newMinutes >= 60) {
+      newMinutes = 0;
+      newHours += 1;
+      if (newHours > 12) {
+        newHours = 1;
+      }
+    }
+    updateDate(newHours, newMinutes, seconds);
+  };
+
+  const decreaseMinutes = () => {
+    let newMinutes = minutes - 1;
+    let newHours = hours;
+    if (newMinutes < 0) {
+      newMinutes = 59;
+      newHours -= 1;
+      if (newHours < 1) {
+        newHours = 12;
+      }
+    }
+    updateDate(newHours, newMinutes, seconds);
+  };
+
+  const addSeconds = () => {
+    let newSeconds = seconds + 1;
+    let newMinutes = minutes;
+    let newHours = hours;
+    if (newSeconds >= 60) {
+      newSeconds = 0;
+      newMinutes += 1;
+      if (newMinutes >= 60) {
+        newMinutes = 0;
+        newHours += 1;
+        if (newHours > 12) {
+          newHours = 1;
+        }
+      }
+    }
+    updateDate(newHours, newMinutes, newSeconds);
+  };
+
+  const decreaseSeconds = () => {
+    let newSeconds = seconds - 1;
+    let newMinutes = minutes;
+    let newHours = hours;
+    if (newSeconds < 0) {
+      newSeconds = 59;
+      newMinutes -= 1;
+      if (newMinutes < 0) {
+        newMinutes = 59;
+        newHours -= 1;
+        if (newHours < 1) {
+          newHours = 12;
+        }
+      }
+    }
+    updateDate(newHours, newMinutes, newSeconds);
+  };
+
+  const handleMeridiemChange = (selectedMeridiem: string) => {
+    let newHours = hours;
+    if (selectedMeridiem === 'PM' && hours < 12) {
+      newHours += 12;
+    } else if (selectedMeridiem === 'AM' && hours === 12) {
+      newHours = 0;
+    }
+    setMeridiem(selectedMeridiem);
+    const newDate = new Date(value.getTime());
+    newDate.setHours(newHours, minutes, seconds);
+    onChange(newDate);
   };
 
   const setSelectedDateTime = () => {
@@ -42,35 +127,42 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
 
   useEffect(() => {
     setSelectedDateTime();
-  }, [value]);
+  }, [value, hours]);
 
   return (
     <>
       <div className='container'>
-        <input className='container__time-input' type='text' value={hours} readOnly />
+        <input
+          className='container__time-input'
+          type='text'
+          value={hours}
+          onChange={(value) => {
+            setHours(Number(value));
+          }}
+        />
         <div className='container__arrow-box'>
-          <div>
+          <div onClick={addHours}>
             <img src={timer_up_icon_inactive}></img>
           </div>
-          <div>
+          <div onClick={decreaseHours}>
             <img src={timer_down_icon_inactive}></img>
           </div>
         </div>
         <input className='container__time-input' type='text' value={minutes} readOnly />
         <div className='container__arrow-box'>
-          <div>
+          <div onClick={addMinutes}>
             <img src={timer_up_icon_inactive}></img>
           </div>
-          <div>
+          <div onClick={decreaseMinutes}>
             <img src={timer_down_icon_inactive}></img>
           </div>
         </div>
         <input className='container__time-input' type='text' value={seconds} readOnly />
         <div className='container__arrow-box'>
-          <div>
+          <div onClick={addSeconds}>
             <img src={timer_up_icon_inactive}></img>
           </div>
-          <div>
+          <div onClick={decreaseSeconds}>
             <img src={timer_down_icon_inactive}></img>
           </div>
         </div>
@@ -80,15 +172,15 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
           value={meridiem}
           className='container__selector'
           onChange={(e) => {
-            setMeridiem(e.target.value);
+            handleMeridiemChange(e.target.value);
           }}
         >
-          <option value='am'>AM</option>
-          <option value='pm'>PM</option>
+          <option value='AM'>AM</option>
+          <option value='PM'>PM</option>
         </select>
       </div>
       <div className='date-time-selector__actions'>
-        <Button className='button__set-up' text={'Set up'} onClick={() => setUp(onClose)} />
+        <Button className='button__set-up' text={'Set up'} onClick={setSelectedDateTime} />
         <Button className='button__cancel' text={'Cancel'} onClick={initSelection} />
       </div>
     </>

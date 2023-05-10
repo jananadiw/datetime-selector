@@ -23,7 +23,6 @@ export const Calendar = (props: CalendarProps) => {
   const handleClickDate = (index: number) => {
     const date = setDate(value, index);
     onChange && onChange(date);
-    // console.log('selected date', format(date, 'yyyy LLLL dd'));
   };
 
   return (
