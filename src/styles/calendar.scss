@@ -1,9 +1,6 @@
 @import 'colors';
 .calendar {
-  display: grid;
-  align-items: center;
-  text-align: center;
-  justify-items: center;
+  width: 100%;
 
   &__header {
     display: flex;
@@ -29,33 +26,9 @@
   &__body {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    padding: 12px 25px 9px 25px;
+    padding: 12px 25px;
     text-align: center;
     align-items: center;
     justify-items: center;
-
-    .cell {
-      width: 28px;
-      height: 28px;
-      padding: 4px 10px 5px 10px;
-      background-color: $base-color;
-
-      &__days {
-        font-weight: 600;
-        font-size: 10px;
-        color: #84919e;
-      }
-      &__date {
-        font-weight: 500;
-        font-size: 14px;
-        cursor: pointer;
-      }
-
-      &:hover {
-        background-color: $primary-color;
-        border: 1px solid $primary-color;
-        border-radius: 50%;
-      }
-    }
   }
 }

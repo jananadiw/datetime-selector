@@ -1,5 +1,6 @@
 import React from 'react';
-import '../styles/layout.scss';
+// import '../styles/calendar.scss';
+import '../styles/cell.scss';
 
 interface Props extends React.PropsWithChildren {
   onClick?: () => void;
