@@ -12,16 +12,15 @@ type ClockProps = {
 };
 
 export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
-  const [hours, setHours] = useState<number>(value.getHours());
+  const [hours, setHours] = useState<number>(value.getHours() % 12 || 12);
   const [minutes, setMinutes] = useState<number>(value.getMinutes());
   const [seconds, setSeconds] = useState<number>(value.getSeconds());
-  const [meridiem, setMeridiem] = useState<string>(hours >= 12 ? 'PM' : 'AM');
+  const [meridiem, setMeridiem] = useState<string>(value.getHours() >= 12 ? 'PM' : 'AM');
 
   const updateDate = (newHours: number, newMinutes: number, newSeconds: number) => {
-    setHours(newHours);
+    setHours(newHours % 12 || 12);
     setMinutes(newMinutes);
     setSeconds(newSeconds);
-    setMeridiem(newHours >= 12 ? 'PM' : 'AM');
     const newDate = new Date(value);
     newDate.setHours(newHours, newMinutes, newSeconds);
     onChange(newDate);
@@ -134,14 +133,7 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
   return (
     <>
       <div className='container'>
-        <input
-          className='container__time-input'
-          type='text'
-          value={hours}
-          onChange={(value) => {
-            setHours(Number(value));
-          }}
-        />
+        <input className='container__time-input' type='text' value={hours} readOnly />
         <div className='container__arrow-box'>
           <div onClick={addHours}>
             <img src={timer_up_icon_inactive}></img>
