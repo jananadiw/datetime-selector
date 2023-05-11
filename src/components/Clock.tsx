@@ -7,6 +7,8 @@ import timer_up_icon_inactive from '../assets/timer_up_icon_inactive.svg';
 type ClockProps = {
   value: Date;
   onChange: (value: Date) => void;
+  startTime?: string;
+  endTime?: string;
 };
 
 export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {

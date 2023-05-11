@@ -1,3 +1,4 @@
+@import 'colors';
 .calendar {
   display: grid;
   align-items: center;
@@ -37,6 +38,7 @@
       width: 28px;
       height: 28px;
       padding: 4px 10px 5px 10px;
+      background-color: $base-color;
 
       &__days {
         font-weight: 600;
@@ -47,6 +49,12 @@
         font-weight: 500;
         font-size: 14px;
         cursor: pointer;
+      }
+
+      &:hover {
+        background-color: $primary-color;
+        border: 1px solid $primary-color;
+        border-radius: 50%;
       }
     }
   }

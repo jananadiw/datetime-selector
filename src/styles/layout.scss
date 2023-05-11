@@ -1,8 +1,10 @@
+@import 'colors';
+
 .date-time-selector {
   width: 300px;
   border-radius: 4px;
-  border: 1px solid #e6eaee;
-  background-color: #fff;
+  border: 1px solid $border-color;
+  background-color: $base-color;
 
   &__actions {
     padding: 15px 45px 15px 45px;

@@ -1,0 +1,11 @@
+@import 'colors';
+
+.cell {
+  background-color: $base-color;
+
+  &:hover {
+    background-color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 50%;
+  }
+}
