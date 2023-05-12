@@ -49,8 +49,15 @@ export const Calendar = (props: CalendarProps) => {
         ))}
         {Array.from({ length: numDays }).map((_, index) => {
           const date = index + 1;
+          const isSelectedDate = date === value.getDate();
+
           return (
-            <Cell className='cell' key={date} onClick={() => handleClickDate(date)}>
+            <Cell
+              isActive={isSelectedDate}
+              className='cell'
+              key={date}
+              onClick={() => handleClickDate(date)}
+            >
               {date}
             </Cell>
           );
