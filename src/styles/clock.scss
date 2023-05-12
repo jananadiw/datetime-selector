@@ -15,8 +15,9 @@
     width: 32px;
     padding-right: 4px;
     font-size: 28px;
-    font-weight: 600px;
+    font-weight: 600;
     color: $font-clock;
+    text-align: right;
     border: none;
     outline: none;
 
@@ -45,12 +46,14 @@
 
     .select {
       position: absolute;
+      font-size: 13px;
+      font-weight: 600;
       display: flex;
       border: none;
       outline: none;
       overflow: hidden;
       width: 60px;
-      padding: 6px 11px 6px 10px;
+      padding: 6px 8px 6px 10px;
     }
   }
 }
