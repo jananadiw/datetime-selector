@@ -128,12 +128,17 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
 
   useEffect(() => {
     setSelectedDateTime();
-  }, [value, hours]);
+  }, [value]);
 
   return (
     <>
       <div className='container'>
-        <input className='container__time-input' type='text' value={hours} readOnly />
+        <input
+          className='container__time-input'
+          type='text'
+          value={hours < 12 ? `${0}${hours}` : `${hours}`}
+          readOnly
+        />
         <div className='container__arrow-box'>
           <div onClick={addHours}>
             <img src={timer_up_icon_inactive}></img>
@@ -142,7 +147,12 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
             <img src={timer_down_icon_inactive}></img>
           </div>
         </div>
-        <input className='container__time-input' type='text' value={minutes} readOnly />
+        <input
+          className='container__time-input'
+          type='text'
+          value={minutes < 10 ? `${0}${minutes}` : `${minutes}`}
+          readOnly
+        />
         <div className='container__arrow-box'>
           <div onClick={addMinutes}>
             <img src={timer_up_icon_inactive}></img>
@@ -151,7 +161,12 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
             <img src={timer_down_icon_inactive}></img>
           </div>
         </div>
-        <input className='container__time-input' type='text' value={seconds} readOnly />
+        <input
+          className='container__time-input'
+          type='text'
+          value={seconds < 10 ? `${0}${seconds}` : `${seconds}`}
+          readOnly
+        />
         <div className='container__arrow-box'>
           <div onClick={addSeconds}>
             <img src={timer_up_icon_inactive}></img>
@@ -161,17 +176,19 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
           </div>
         </div>
 
-        <select
-          name='time'
-          value={meridiem}
-          className='container__selector'
-          onChange={(e) => {
-            handleMeridiemChange(e.target.value);
-          }}
-        >
-          <option value='AM'>AM</option>
-          <option value='PM'>PM</option>
-        </select>
+        <div className='container__selector'>
+          <select
+            name='time'
+            value={meridiem}
+            className='select'
+            onChange={(e) => {
+              handleMeridiemChange(e.target.value);
+            }}
+          >
+            <option value='AM'>AM</option>
+            <option value='PM'>PM</option>
+          </select>
+        </div>
       </div>
       <div className='date-time-selector__actions'>
         <Button className='button__set-up' text={'Set up'} onClick={setSelectedDateTime} />
