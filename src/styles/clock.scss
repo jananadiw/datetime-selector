@@ -18,6 +18,7 @@
     font-weight: 600px;
     color: $font-clock;
     border: none;
+    outline: none;
 
     &:focus {
       border: none;
@@ -33,20 +34,23 @@
   }
 
   &__selector {
-    width: 72px;
-    padding: 6px 10px;
+    position: relative;
+    width: 60px;
+    height: 30px;
     appearance: none;
     -webkit-appearance: none;
-    padding-right: 1.5em;
-  }
+    border-radius: 4px;
+    padding-right: 0.5em;
+    border: 1px solid $border-color-3;
 
-  &__selector::before {
-    content: '▼';
-    // position: absolute;
-    display: inline;
-    right: 0.5em;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
+    .select {
+      position: absolute;
+      display: flex;
+      border: none;
+      outline: none;
+      overflow: hidden;
+      width: 60px;
+      padding: 6px 11px 6px 10px;
+    }
   }
 }
