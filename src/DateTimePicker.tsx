@@ -5,7 +5,17 @@ import { Clock } from './components/Clock';
 import './styles/layout.scss';
 import './styles/button.scss';
 
-export default function DateTimePicker() {
+// Props
+type DateTimePickerProps = {
+  date?: number;
+  range?: boolean;
+  startDate?: number;
+  endDate?: number;
+  disabled?: boolean;
+  startTimeCap?: number;
+};
+
+export const DateTimePicker: React.FC<DateTimePickerProps> = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   return (
@@ -14,4 +24,4 @@ export default function DateTimePicker() {
       <Clock value={currentDate} onChange={setCurrentDate} />
     </div>
   );
-}
+};
