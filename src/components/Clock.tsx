@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
 import '../styles/clock.scss';
 import timer_down_icon_inactive from '../assets/timer_down_icon_inactive.svg';
 import timer_up_icon_inactive from '../assets/timer_up_icon_inactive.svg';
+import { ActionBar } from './ActionBar';
 
 type ClockProps = {
   value: Date;
@@ -190,10 +190,8 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
           </select>
         </div>
       </div>
-      <div className='date-time-selector__actions'>
-        <Button className='button__set-up' text={'Set up'} onClick={setSelectedDateTime} />
-        <Button className='button__cancel' text={'Cancel'} onClick={initSelection} />
-      </div>
+
+      <ActionBar onClick={setSelectedDateTime} onReset={initSelection} />
     </>
   );
 };
