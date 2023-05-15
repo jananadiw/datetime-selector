@@ -1,5 +1,5 @@
 import React from 'react';
-import DateTimePicker from './DateTimePicker';
+import { DateTimePicker } from './DateTimePicker';
 
 function App() {
   return <DateTimePicker />;
