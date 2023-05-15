@@ -1,5 +1,5 @@
-import React from 'react';
-import { startOfMonth, endOfMonth, differenceInDays, sub, add, format, setDate } from 'date-fns';
+import React, { useState } from 'react';
+import * as dateFns from 'date-fns';
 import '../styles/calendar.scss';
 import '../styles/cell.scss';
 import { Cell } from '../components/Cell';
@@ -14,16 +14,21 @@ type CalendarProps = {
 
 export const Calendar = (props: CalendarProps) => {
   const { value = new Date(), onChange } = props;
-  const startDate = startOfMonth(value);
-  const endDate = endOfMonth(value);
-  const numDays = differenceInDays(endDate, startDate) + 1;
+  const startDate = dateFns.startOfMonth(value);
+  const endDate = dateFns.endOfMonth(value);
+  const numDays = dateFns.differenceInDays(endDate, startDate) + 1;
   const prefixDays = startDate.getDay(); // get the starting day of the month
-  const prevMonth = () => onChange && onChange(sub(value, { months: 1 }));
-  const nextMonth = () => onChange && onChange(add(value, { months: 1 }));
+  const prevMonth = () => onChange && onChange(dateFns.sub(value, { months: 1 }));
+  const nextMonth = () => onChange && onChange(dateFns.add(value, { months: 1 }));
+  const today = new Date();
 
   const handleClickDate = (index: number) => {
-    const date = setDate(value, index);
+    const date = dateFns.setDate(value, index);
     onChange && onChange(date);
+  };
+
+  const isBeforeToday = (date: Date) => {
+    return dateFns.isBefore(date, dateFns.startOfDay(today));
   };
 
   return (
@@ -32,7 +37,7 @@ export const Calendar = (props: CalendarProps) => {
         <div className='calendar__header__navigation' onClick={prevMonth}>
           <img src={calender_back_icon}></img>
         </div>
-        <div className='calendar__header__middle'>{format(value, 'LLLL yyyy')}</div>
+        <div className='calendar__header__middle'>{dateFns.format(value, 'LLLL yyyy')}</div>
         <div className='calendar__header__navigation' onClick={nextMonth}>
           <img src={calender_Forward_icon}></img>
         </div>
@@ -50,13 +55,13 @@ export const Calendar = (props: CalendarProps) => {
         {Array.from({ length: numDays }).map((_, index) => {
           const date = index + 1;
           const isSelectedDate = date === value.getDate();
-
+          const isDisabled = isBeforeToday(dateFns.setDate(value, date));
           return (
             <Cell
               isActive={isSelectedDate}
-              className='cell'
+              className={`cell ${isDisabled ? 'cell__disabled' : ''}`}
               key={date}
-              onClick={() => handleClickDate(date)}
+              onClick={isDisabled ? undefined : () => handleClickDate(date)}
             >
               {date}
             </Cell>
