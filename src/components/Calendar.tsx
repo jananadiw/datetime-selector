@@ -10,13 +10,16 @@ import calender_back_icon from '../assets/calender_back_icon.svg';
 type CalendarProps = {
   value?: Date;
   onChange: (value: Date) => void;
+  selectedDate: Date | null;
+  setSelectedDate: (value: Date | null) => void;
 };
 
 export const Calendar = (props: CalendarProps) => {
-  const { value = new Date(), onChange } = props;
+  const { value = new Date(), onChange, selectedDate, setSelectedDate } = props;
   const startDate = dateFns.startOfMonth(value);
   const endDate = dateFns.endOfMonth(value);
   const numDays = dateFns.differenceInDays(endDate, startDate) + 1;
+  const totalDates = dateFns.eachDayOfInterval({ start: startDate, end: endDate });
   const prefixDays = startDate.getDay(); // get the starting day of the month
   const prevMonth = () => onChange && onChange(dateFns.sub(value, { months: 1 }));
   const nextMonth = () => onChange && onChange(dateFns.add(value, { months: 1 }));
@@ -24,6 +27,7 @@ export const Calendar = (props: CalendarProps) => {
 
   const handleClickDate = (index: number) => {
     const date = dateFns.setDate(value, index);
+    setSelectedDate && setSelectedDate(date);
     onChange && onChange(date);
   };
 
@@ -52,18 +56,24 @@ export const Calendar = (props: CalendarProps) => {
         {Array.from({ length: prefixDays }).map((_, index) => (
           <Cell key={index} />
         ))}
-        {Array.from({ length: numDays }).map((_, index) => {
-          const date = index + 1;
-          const isSelectedDate = date === value.getDate();
-          const isDisabled = isBeforeToday(dateFns.setDate(value, date));
+        {totalDates.map((date) => {
+          if (date.getMonth() !== value.getMonth()) {
+            return <Cell key={date.toString()} />;
+          }
+
+          const isSelectedDate = selectedDate ? dateFns.isSameDay(date, selectedDate) : false;
+          const isToday = dateFns.isToday(date);
+          const isDisabled = isBeforeToday(date);
+
           return (
             <Cell
               isActive={isSelectedDate}
+              isToday={isToday}
               className={`cell ${isDisabled ? 'cell__disabled' : ''}`}
-              key={date}
-              onClick={isDisabled ? undefined : () => handleClickDate(date)}
+              key={date.toString()}
+              onClick={isDisabled ? undefined : () => handleClickDate(date.getDate())}
             >
-              {date}
+              {dateFns.format(date, 'd')}
             </Cell>
           );
         })}
