@@ -136,7 +136,7 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
         <input
           className='container__time-input'
           type='text'
-          value={hours < 12 ? `${0}${hours}` : `${hours}`}
+          value={hours < 10 ? `${0}${hours}` : `${hours}`}
           readOnly
         />
         <div className='container__arrow-box'>
