@@ -17,10 +17,16 @@ type DateTimePickerProps = {
 
 export const DateTimePicker: React.FC<DateTimePickerProps> = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
     <div className='date-time-selector'>
-      <Calendar value={currentDate} onChange={setCurrentDate} />
+      <Calendar
+        value={currentDate}
+        onChange={setCurrentDate}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
       <Clock value={currentDate} onChange={setCurrentDate} />
     </div>
   );

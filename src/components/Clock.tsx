@@ -118,7 +118,6 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
   };
 
   const setSelectedDateTime = () => {
-    console.log('selected date & time', value);
     return value;
   };
 
