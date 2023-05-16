@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../styles/clock.scss';
 import timer_down_icon_inactive from '../assets/timer_down_icon_inactive.svg';
 import timer_up_icon_inactive from '../assets/timer_up_icon_inactive.svg';
-import { ActionBar } from './ActionBar';
 
 type ClockProps = {
   value: Date;
@@ -117,19 +116,6 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange, range, time, text
     newDate.setHours(newHours, minutes, seconds);
     onChange(newDate);
   };
-
-  const setSelectedDateTime = () => {
-    console.log(value);
-    return value;
-  };
-
-  const initSelection = () => {
-    console.log('empty selected date');
-  };
-
-  useEffect(() => {
-    setSelectedDateTime();
-  }, [value]);
 
   const getStartEndTimeText = () => {
     if (time) {

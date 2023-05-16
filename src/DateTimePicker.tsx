@@ -7,7 +7,7 @@ import './styles/button.scss';
 
 // Props
 type DateTimePickerProps = {
-  date?: number;
+  date?: Date | null;
   range?: boolean;
   startDate?: number;
   endDate?: number;
@@ -31,7 +31,15 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({ range, date }) =
         setSelectedEndDate={setEndDate}
         range={true}
       />
-      <TimePicker range={true} value={currentDate} onChange={setCurrentDate} />
+      <TimePicker
+        value={currentDate}
+        onChange={setCurrentDate}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        selectedEndDate={endDate}
+        setSelectedEndDate={setEndDate}
+        range={true}
+      />
     </div>
   );
 };

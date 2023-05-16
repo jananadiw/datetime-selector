@@ -3,7 +3,7 @@ import * as dateFns from 'date-fns';
 import '../styles/calendar.scss';
 import '../styles/cell.scss';
 import { Cell } from '../components/Cell';
-import { daysOfWeek } from '../DateUtils';
+import { daysOfWeek } from '../utils/DateUtils';
 import calender_Forward_icon from '../assets/calender_Forward_icon.svg';
 import calender_back_icon from '../assets/calender_back_icon.svg';
 
@@ -11,8 +11,6 @@ type CalendarProps = {
   value?: Date;
   onChange: (value: Date) => void;
   selectedDate: Date | null;
-  // selectedStartDate?: Date | null;
-  // setSelectedStartDate?: (value: Date | null) => void;
   selectedEndDate?: Date | null;
   setSelectedDate: (value: Date | null) => void;
   setSelectedEndDate?: (value: Date | null) => void;
@@ -25,8 +23,6 @@ export const Calendar = (props: CalendarProps) => {
     onChange,
     selectedDate,
     setSelectedDate,
-    // selectedStartDate,
-    // setSelectedStartDate,
     selectedEndDate,
     setSelectedEndDate,
     range,
@@ -38,25 +34,23 @@ export const Calendar = (props: CalendarProps) => {
   const prevMonth = () => onChange && onChange(dateFns.sub(value, { months: 1 }));
   const nextMonth = () => onChange && onChange(dateFns.add(value, { months: 1 }));
   const today = new Date();
-  // const dateRange = [selectedStartDate?.toString(), selectedEndDate?.toString()];
-  const dateRange = [selectedDate?.toString(), selectedEndDate?.toString()];
 
   const handleClickDate = (index: number) => {
     const date = dateFns.setDate(value, index);
     if (range) {
       if (selectedDate && !selectedEndDate) {
         if (dateFns.isBefore(date, selectedDate)) {
-          setSelectedDate && setSelectedDate(date);
+          setSelectedDate(date);
           setSelectedEndDate && setSelectedEndDate(selectedDate);
         } else {
           setSelectedEndDate && setSelectedEndDate(date);
         }
       } else {
-        setSelectedDate && setSelectedDate(date);
+        setSelectedDate(date);
         setSelectedEndDate && setSelectedEndDate(null);
       }
     } else {
-      setSelectedDate && setSelectedDate(date);
+      setSelectedDate(date);
     }
     onChange && onChange(date);
   };
@@ -108,7 +102,6 @@ export const Calendar = (props: CalendarProps) => {
               currentDate.setDate(currentDate.getDate() + 1);
             }
           }
-          console.log('dateRange', dateRange);
 
           const isActive = isSelectedDate || isSelectedRange || false;
 

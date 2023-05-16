@@ -7,15 +7,36 @@ import '../styles/layout.scss';
 type TimePickerProps = {
   value: Date;
   onChange: (value: Date) => void;
+  selectedDate: Date | null;
+  selectedEndDate?: Date | null;
+  setSelectedDate: (value: Date | null) => void;
+  setSelectedEndDate?: (value: Date | null) => void;
   range?: boolean;
 };
 
-export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange, range }) => {
-  const [startTime, setStartTime] = useState<Date | null>(null);
-  const [endTime, setEndTime] = useState<Date | null>(null);
+export const TimePicker: React.FC<TimePickerProps> = ({
+  value,
+  onChange,
+  selectedDate,
+  setSelectedDate,
+  selectedEndDate,
+  setSelectedEndDate,
+  range,
+}) => {
+  const [startTime, setStartTime] = useState<Date | null>(
+    selectedDate ? new Date(selectedDate.getTime()) : null,
+  );
+  const [endTime, setEndTime] = useState<Date | null>(
+    selectedEndDate ? new Date(selectedEndDate.getTime()) : null,
+  );
 
   const setSelectedDateTime = () => {
-    console.log('selected time', value);
+    setStartTime(selectedDate ? new Date(selectedDate.getTime()) : null);
+    setEndTime(selectedEndDate ? new Date(selectedEndDate.getTime()) : null);
+
+    console.log('start time', startTime);
+    console.log('end time', endTime);
+
     return value;
   };
 
@@ -33,21 +54,15 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange, range }
         <div>
           <Clock
             value={value}
-            onChange={setStartTime}
+            onChange={onChange}
             range={true}
             text={'Start time'}
             time={startTime}
           />
-          <Clock
-            value={value}
-            onChange={setEndTime}
-            range={true}
-            text={'End time'}
-            time={endTime}
-          />
+          <Clock value={value} onChange={onChange} range={true} text={'End time'} time={endTime} />
         </div>
       ) : (
-        <Clock value={value} onChange={setStartTime} time={startTime} />
+        <Clock value={value} onChange={onChange} time={startTime} />
       )}
 
       <ActionBar onClick={setSelectedDateTime} onReset={initSelection} />
