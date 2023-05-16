@@ -7,11 +7,12 @@ import { ActionBar } from './ActionBar';
 type ClockProps = {
   value: Date;
   onChange: (value: Date) => void;
-  startTime?: string;
-  endTime?: string;
+  time: Date | null;
+  range?: boolean;
+  text?: string;
 };
 
-export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
+export const Clock: React.FC<ClockProps> = ({ value, onChange, range, time, text }) => {
   const [hours, setHours] = useState<number>(value.getHours() % 12 || 12);
   const [minutes, setMinutes] = useState<number>(value.getMinutes());
   const [seconds, setSeconds] = useState<number>(value.getSeconds());
@@ -130,68 +131,81 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange }) => {
     setSelectedDateTime();
   }, [value]);
 
+  const getStartEndTimeText = () => {
+    if (time) {
+      const month = time.toLocaleString('default', { month: 'long' });
+      const date = time.getDate();
+      return `${month} ${date}`;
+    } else {
+      return `--`;
+    }
+  };
+
+  const monthAndDate = getStartEndTimeText();
+
   return (
     <>
       <div className='container'>
-        <input
-          className='container__time-input'
-          type='text'
-          value={hours < 10 ? `${0}${hours}` : `${hours}`}
-          readOnly
-        />
-        <div className='container__arrow-box'>
-          <div onClick={addHours}>
-            <img src={timer_up_icon_inactive}></img>
+        {range && <div className='container__month-date'>{`${text} : ${monthAndDate}`}</div>}
+        <div className='clock'>
+          <input
+            className='clock__time-input'
+            type='text'
+            value={hours < 10 ? `${0}${hours}` : `${hours}`}
+            readOnly
+          />
+          <div className='clock__arrow-box'>
+            <div onClick={addHours}>
+              <img src={timer_up_icon_inactive}></img>
+            </div>
+            <div onClick={decreaseHours}>
+              <img src={timer_down_icon_inactive}></img>
+            </div>
           </div>
-          <div onClick={decreaseHours}>
-            <img src={timer_down_icon_inactive}></img>
+          <input
+            className='clock__time-input'
+            type='text'
+            value={minutes < 10 ? `${0}${minutes}` : `${minutes}`}
+            readOnly
+          />
+          <div className='clock__arrow-box'>
+            <div onClick={addMinutes}>
+              <img src={timer_up_icon_inactive}></img>
+            </div>
+            <div onClick={decreaseMinutes}>
+              <img src={timer_down_icon_inactive}></img>
+            </div>
           </div>
-        </div>
-        <input
-          className='container__time-input'
-          type='text'
-          value={minutes < 10 ? `${0}${minutes}` : `${minutes}`}
-          readOnly
-        />
-        <div className='container__arrow-box'>
-          <div onClick={addMinutes}>
-            <img src={timer_up_icon_inactive}></img>
+          <input
+            className='clock__time-input'
+            type='text'
+            value={seconds < 10 ? `${0}${seconds}` : `${seconds}`}
+            readOnly
+          />
+          <div className='clock__arrow-box'>
+            <div onClick={addSeconds}>
+              <img src={timer_up_icon_inactive}></img>
+            </div>
+            <div onClick={decreaseSeconds}>
+              <img src={timer_down_icon_inactive}></img>
+            </div>
           </div>
-          <div onClick={decreaseMinutes}>
-            <img src={timer_down_icon_inactive}></img>
-          </div>
-        </div>
-        <input
-          className='container__time-input'
-          type='text'
-          value={seconds < 10 ? `${0}${seconds}` : `${seconds}`}
-          readOnly
-        />
-        <div className='container__arrow-box'>
-          <div onClick={addSeconds}>
-            <img src={timer_up_icon_inactive}></img>
-          </div>
-          <div onClick={decreaseSeconds}>
-            <img src={timer_down_icon_inactive}></img>
-          </div>
-        </div>
 
-        <div className='container__selector'>
-          <select
-            name='time'
-            value={meridiem}
-            className='select'
-            onChange={(e) => {
-              handleMeridiemChange(e.target.value);
-            }}
-          >
-            <option value='AM'>AM</option>
-            <option value='PM'>PM</option>
-          </select>
+          <div className='clock__selector'>
+            <select
+              name='time'
+              value={meridiem}
+              className='select'
+              onChange={(e) => {
+                handleMeridiemChange(e.target.value);
+              }}
+            >
+              <option value='AM'>AM</option>
+              <option value='PM'>PM</option>
+            </select>
+          </div>
         </div>
       </div>
-
-      <ActionBar onClick={setSelectedDateTime} onReset={initSelection} />
     </>
   );
 };

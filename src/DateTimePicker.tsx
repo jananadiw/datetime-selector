@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar } from './components/Calendar';
-import { Clock } from './components/Clock';
+import { TimePicker } from './components/TimePicker';
 
 import './styles/layout.scss';
 import './styles/button.scss';
@@ -18,7 +18,6 @@ type DateTimePickerProps = {
 export const DateTimePicker: React.FC<DateTimePickerProps> = ({ range, date }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   return (
@@ -28,13 +27,11 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({ range, date }) =
         onChange={setCurrentDate}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
-        // selectedStartDate={startDate}
-        // setSelectedStartDate={setStartDate}
         selectedEndDate={endDate}
         setSelectedEndDate={setEndDate}
         range={true}
       />
-      <Clock value={currentDate} onChange={setCurrentDate} />
+      <TimePicker range={true} value={currentDate} onChange={setCurrentDate} />
     </div>
   );
 };
