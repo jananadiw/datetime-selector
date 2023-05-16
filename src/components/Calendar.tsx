@@ -11,10 +11,10 @@ type CalendarProps = {
   value?: Date;
   onChange: (value: Date) => void;
   selectedDate: Date | null;
-  selectedStartDate?: Date | null;
+  // selectedStartDate?: Date | null;
+  // setSelectedStartDate?: (value: Date | null) => void;
   selectedEndDate?: Date | null;
   setSelectedDate: (value: Date | null) => void;
-  setSelectedStartDate?: (value: Date | null) => void;
   setSelectedEndDate?: (value: Date | null) => void;
   range: boolean;
 };
@@ -25,9 +25,9 @@ export const Calendar = (props: CalendarProps) => {
     onChange,
     selectedDate,
     setSelectedDate,
-    selectedStartDate,
+    // selectedStartDate,
+    // setSelectedStartDate,
     selectedEndDate,
-    setSelectedStartDate,
     setSelectedEndDate,
     range,
   } = props;
@@ -38,26 +38,21 @@ export const Calendar = (props: CalendarProps) => {
   const prevMonth = () => onChange && onChange(dateFns.sub(value, { months: 1 }));
   const nextMonth = () => onChange && onChange(dateFns.add(value, { months: 1 }));
   const today = new Date();
-  const dateRange = [selectedStartDate?.toString(), selectedEndDate?.toString()];
-
-  // const handleClickDate = (index: number) => {
-  //   const date = dateFns.setDate(value, index);
-  //   setSelectedDate && setSelectedDate(date);
-  //   onChange && onChange(date);
-  // };
+  // const dateRange = [selectedStartDate?.toString(), selectedEndDate?.toString()];
+  const dateRange = [selectedDate?.toString(), selectedEndDate?.toString()];
 
   const handleClickDate = (index: number) => {
     const date = dateFns.setDate(value, index);
     if (range) {
-      if (selectedStartDate && !selectedEndDate) {
-        if (dateFns.isBefore(date, selectedStartDate)) {
-          setSelectedStartDate && setSelectedStartDate(date);
-          setSelectedEndDate && setSelectedEndDate(selectedStartDate);
+      if (selectedDate && !selectedEndDate) {
+        if (dateFns.isBefore(date, selectedDate)) {
+          setSelectedDate && setSelectedDate(date);
+          setSelectedEndDate && setSelectedEndDate(selectedDate);
         } else {
           setSelectedEndDate && setSelectedEndDate(date);
         }
       } else {
-        setSelectedStartDate && setSelectedStartDate(date);
+        setSelectedDate && setSelectedDate(date);
         setSelectedEndDate && setSelectedEndDate(null);
       }
     } else {
@@ -98,18 +93,16 @@ export const Calendar = (props: CalendarProps) => {
 
           const isSelectedDate = selectedDate ? dateFns.isSameDay(date, selectedDate) : false;
           const isSelectedRange =
-            selectedStartDate &&
+            selectedDate &&
             selectedEndDate &&
-            dateFns.isSameDay(date, selectedStartDate) &&
+            dateFns.isSameDay(date, selectedDate) &&
             dateFns.isSameDay(date, selectedEndDate);
           const isToday = dateFns.isToday(date);
           const isDisabled = isBeforeToday(date);
 
-          const isActive = isSelectedDate || isSelectedRange || false;
-
           const dateRange: Date[] = [];
-          if (selectedStartDate && selectedEndDate) {
-            const currentDate = new Date(selectedStartDate);
+          if (selectedDate && selectedEndDate) {
+            const currentDate = new Date(selectedDate);
             while (currentDate <= selectedEndDate) {
               dateRange.push(new Date(currentDate));
               currentDate.setDate(currentDate.getDate() + 1);
@@ -117,14 +110,16 @@ export const Calendar = (props: CalendarProps) => {
           }
           console.log('dateRange', dateRange);
 
+          const isActive = isSelectedDate || isSelectedRange || false;
+
           return (
             <Cell
               isActive={isActive}
               isToday={isToday}
               isRange={range && dateRange.some((d) => dateFns.isSameDay(d, date))}
-              isStart={range && selectedStartDate && dateFns.isSameDay(date, selectedStartDate)}
+              isStart={range && selectedDate && dateFns.isSameDay(date, selectedDate)}
               isEnd={range && selectedEndDate && dateFns.isSameDay(date, selectedEndDate)}
-              startDate={selectedStartDate}
+              startDate={selectedDate}
               endDate={selectedEndDate}
               className={`cell ${isDisabled ? 'cell__disabled' : ''}`}
               key={date.toString()}

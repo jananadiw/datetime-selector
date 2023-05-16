@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/cell.scss';
 
 interface Props extends React.PropsWithChildren {
-  isActive?: boolean;
+  isActive?: boolean | Date;
   isToday?: boolean;
   isRange?: boolean | null | undefined;
   isStart?: boolean | null | undefined;
@@ -25,7 +25,8 @@ export const Cell: React.FC<Props> = ({
   children,
   onClick,
 }) => {
-  const activeClass = isActive ? 'cell__selected' : isToday ? 'cell__today' : '';
+  const activeClass =
+    isActive || (isRange && isStart) ? 'cell__selected' : isToday ? 'cell__today' : '';
   const activeStartRange = isRange && startDate ? 'cell__range__start' : '';
   const activeEndRange = isRange && endDate ? 'cell__range__end' : '';
   const activeRange = isRange && startDate && endDate ? 'cell__range' : '';

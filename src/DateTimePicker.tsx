@@ -15,7 +15,7 @@ type DateTimePickerProps = {
   startTimeCap?: number;
 };
 
-export const DateTimePicker: React.FC<DateTimePickerProps> = ({ range }) => {
+export const DateTimePicker: React.FC<DateTimePickerProps> = ({ range, date }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -28,8 +28,8 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({ range }) => {
         onChange={setCurrentDate}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
-        selectedStartDate={startDate}
-        setSelectedStartDate={setStartDate}
+        // selectedStartDate={startDate}
+        // setSelectedStartDate={setStartDate}
         selectedEndDate={endDate}
         setSelectedEndDate={setEndDate}
         range={true}
