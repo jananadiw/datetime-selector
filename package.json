@@ -1,9 +1,9 @@
 {
   "name": "datetime-selector-react",
-  "version": "0.1.15",
+  "version": "0.1.17",
   "private": false,
   "main": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
     "src/**/*"
   ],
