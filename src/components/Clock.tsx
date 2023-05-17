@@ -18,12 +18,14 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange, range, time, text
   const [meridiem, setMeridiem] = useState<string>(value.getHours() >= 12 ? 'PM' : 'AM');
 
   const updateDate = (newHours: number, newMinutes: number, newSeconds: number) => {
+    time = value;
     setHours(newHours % 12 || 12);
     setMinutes(newMinutes);
     setSeconds(newSeconds);
-    const newDate = new Date(value);
-    newDate.setHours(newHours, newMinutes, newSeconds);
-    onChange(newDate);
+    const newTime = new Date(time);
+    console.log('new date', newTime);
+    newTime.setHours(newHours, newMinutes, newSeconds);
+    onChange(newTime);
   };
 
   const addHours = () => {
@@ -112,7 +114,7 @@ export const Clock: React.FC<ClockProps> = ({ value, onChange, range, time, text
       newHours = 0;
     }
     setMeridiem(selectedMeridiem);
-    const newDate = new Date(value.getTime());
+    const newDate = new Date(time || value.getTime());
     newDate.setHours(newHours, minutes, seconds);
     onChange(newDate);
   };

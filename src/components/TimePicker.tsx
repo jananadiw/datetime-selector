@@ -34,9 +34,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     setStartTime(selectedDate ? new Date(selectedDate.getTime()) : null);
     setEndTime(selectedEndDate ? new Date(selectedEndDate.getTime()) : null);
 
-    console.log('start time', startTime);
-    console.log('end time', endTime);
-
     return value;
   };
 
