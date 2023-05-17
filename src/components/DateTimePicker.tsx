@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Calendar } from './components/Calendar';
-import { TimePicker } from './components/TimePicker';
+import { Calendar } from './Calendar';
+import { TimePicker } from './TimePicker';
 
 import './styles/layout.scss';
 import './styles/button.scss';

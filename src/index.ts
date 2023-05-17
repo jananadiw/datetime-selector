@@ -1,4 +1,4 @@
-import { DateTimePicker } from './DateTimePicker';
+import { DateTimePicker } from './components/DateTimePicker';
 import { Button } from './components/Button';
 import { Calendar } from './components/Calendar';
 import { Clock } from './components/Clock';
